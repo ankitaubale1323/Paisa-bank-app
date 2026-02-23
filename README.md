@@ -404,7 +404,7 @@ This project is licensed under the MIT License.
 ### Ankita Ubale
 
 [![GitHub](https://img.shields.io/badge/GitHub-ankitaubale-181717?style=for-the-badge&logo=github)](https://github.com/ankitaubale)
-[![Email](https://img.shields.io/badge/Email-ankitaubale48@gmail.com-ea4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ankitaubale48@gmail.com)
+[![Email](https://img.shields.io/badge/Email-ankitaubalesocial@gmail.com-ea4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ankitaubale48@gmail.com)
 
 *Built with ❤️ using React, Node.js, MongoDB, and Ollama AI*
 

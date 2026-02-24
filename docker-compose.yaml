@@ -4,10 +4,10 @@ services:
 #────────────SERVICE 1: BACKEND (Node.js + Express API)──────────────
   backend:
     build: 
-     context: /backend
+     context: ./backend
      dockerfile: Dockerfile
     container_name: paisabank-backend
-    restart: unsless-stopped
+    restart: unless-stopped
     ports:
       - "5000:5000"
     networks:
@@ -21,10 +21,10 @@ services:
 #──────────── SERVICE 2: FRONTEND (React + Vite → Nginx) ──────────────
   frontend:
     build:
-      context: /frontend
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: paisabank-frontend
-    restart: unsless-stopped
+    restart: unless-stopped
     ports:
       - "80:80"
     networks:

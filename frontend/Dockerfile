@@ -32,7 +32,7 @@ RUN npm run build
 
 
 # Step 7: Use Nginx (lightweight web server) to serve the built app
-FROM nginx:apline
+FROM nginx:alpine
 
 # Step 8: Copy the built React files from Stage 1 into Nginx's serve folder
 COPY --from=builder /app/dist /user/share/nginx/html

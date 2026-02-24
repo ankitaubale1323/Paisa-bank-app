@@ -379,6 +379,80 @@ db.users.updateOne(
 )
 ```
 
+
+
+🖥️ 1️⃣ Runtime & System Dependencies
+These are the core system-level dependencies required to run the application.
+
+| Dependency                 | Required Version           | Why It’s Needed                |
+| -------------------------- | -------------------------- | ------------------------------ |
+| Node.js                    | v18+ (Recommended v20 LTS) | Runs backend & builds frontend |
+| npm                        | v9+                        | Package management             |
+| MongoDB                    | Atlas (Cloud) or 6.x+      | Database                       |
+| Git                        | Any                        | Source control                 |
+| Ollama                     | Latest                     | AI model runtime               |
+| Nginx (Production)         | 1.24+                      | Reverse proxy + static serving |
+| Linux Server (Recommended) | Ubuntu 22.04 LTS           | Production deployment OS       |
+
+
+⚙️ 2️⃣ Backend Dependencies (Node.js API)
+
+All backend dependencies are defined in backend/package.json.
+
+| Package      | Purpose                    |
+| ------------ | -------------------------- |
+| express      | Web framework              |
+| mongoose     | MongoDB ODM                |
+| jsonwebtoken | JWT authentication         |
+| bcryptjs     | Password hashing           |
+| dotenv       | Load environment variables |
+| cors         | Cross-origin requests      |
+| node-fetch   | Call Ollama AI API         |
+
+
+Development Dependencies
+
+| Package | Purpose                         |
+| ------- | ------------------------------- |
+| nodemon | Auto-restart during development |
+
+
+🎨 3️⃣ Frontend Dependencies (React App)
+
+Defined in frontend/package.json.
+
+| Package          | Purpose            |
+| ---------------- | ------------------ |
+| react            | UI framework       |
+| react-dom        | React rendering    |
+| react-router-dom | Routing            |
+| axios            | API communication  |
+| recharts         | Data visualization |
+| lucide-react     | Icons              |
+
+Build Dependencies (Dev Dependencies)
+
+| Package      | Purpose             |
+| ------------ | ------------------- |
+| vite         | Build tool          |
+| tailwindcss  | Styling             |
+| postcss      | CSS processing      |
+| autoprefixer | CSS vendor prefixes |
+
+
+- DevOps Responsibility
+
+- DevOps must:
+
+     --Install Node.js
+
+    ---Run npm run build
+
+    Deploy /dist folder to:
+
+Nginx
+Configure reverse proxy for /api
+
 ---
 
 ## 🤝 Contributing

@@ -1,0 +1,63 @@
+version: '3.8'
+# ── SERVICES ────────────────────────────────────────────────────────
+services:
+#────────────SERVICE 1: BACKEND (Node.js + Express API)──────────────
+  backend:
+    build: 
+     context: /backend
+     dockerfile: Dockerfile
+    container_name: paisabank-backend
+    restart: unsless-stopped
+    ports:
+      - "5000:5000"
+    networks:
+      - paisabank-nw
+    depends_on:
+       ollama:
+        condition: service_started
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+#──────────── SERVICE 2: FRONTEND (React + Vite → Nginx) ──────────────
+  frontend:
+    build:
+      context: /frontend
+      dockerfile: Dockerfile
+    container_name: paisabank-frontend
+    restart: unsless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - paisabank-nw
+    depends_on:
+      - backend
+      
+#────────────SERVICE 3: OLLAMA (Local AI Model Server)──────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: paisabank-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+
+    networks:
+      - paisabank-nw
+    environment:
+      # Allow requests from any origin (needed for backend to call Ollama)
+      - OLLAMA_HOST=0.0.0.0
+
+# ── VOLUMES ─────────────────────────────────────────────────────────
+volumes:
+  # Named volume to persist Ollama AI model files
+  # Ollama downloads llama3.2 (~2GB) — we don't want to re-download every restart
+  ollama-models:
+    driver: local
+
+# ── NETWORKS ─────────────────────────────────────────────────────────
+networks:
+  # Custom bridge network so all containers can communicate by service name
+  paisabank-nw:
+    driver: bridge
+

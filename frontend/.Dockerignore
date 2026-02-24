@@ -1,0 +1,33 @@
+
+# Frontend .dockerignore
+
+
+# Skip node_modules — installed fresh inside the container
+node_modules
+
+# Skip the build output — Docker rebuilds this inside the container
+dist
+
+# Skip log files
+*.log
+npm-debug.log*
+
+# Skip environment files
+.env
+.env.local
+
+# Skip git files
+.git
+.gitignore
+
+# Skip editor files
+.vscode
+.idea
+
+# Skip OS files
+.DS_Store
+Thumbs.db
+
+# Skip Docker files themselves
+Dockerfile
+.dockerignore

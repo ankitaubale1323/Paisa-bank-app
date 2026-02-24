@@ -65,31 +65,33 @@ The application features a sleek dark navy-and-gold UI, JWT-based authentication
 ## 🛠️ Tech Stack
 
 ### Frontend
-| Technology | Version | Purpose     |
-|----------- |---------------------------||
-| React      | 18.2    | UI Framework |
-| Vite       | 5.x     | Build Tool & Dev Server |
-| RRD        | 6.x     | Client-side Routing |
-| Axios      | 1.6     | HTTP Client |
-| Recharts   | 2.x     | Data Visualization |
-| Lucide React | 0.294 | Icon Library |
+| Technology             | Version | Purpose                 |
+| ---------------------- | ------- | ----------------------- |
+| React                  | 18.2    | UI Framework            |
+| Vite                   | 5.x     | Build Tool & Dev Server |
+| React Router DOM (RRD) | 6.x     | Client-side Routing     |
+| Axios                  | 1.6     | HTTP Client             |
+| Recharts               | 2.x     | Data Visualization      |
+| Lucide React           | 0.294   | Icon Library            |
+
 
 ### Backend
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| Node.js    | 22.x | Runtime |
-| Express    | 4.18 | Web Framework |
-| Mongoose   | 8.x | MongoDB ODM |
-| JSON Web Token | 9.x | Authentication |
-| Bcryptjs   | 2.4 | Password Hashing |
-| node-fetch | 3.x | Ollama API Calls |
-| dotenv      | 16.x | Environment Variables |
-| nodemon     | 3.x | Dev Auto-restart |
+| Technology     | Version | Purpose               |
+| -------------- | ------- | --------------------- |
+| Node.js        | 22.x    | Runtime               |
+| Express        | 4.18    | Web Framework         |
+| Mongoose       | 8.x     | MongoDB ODM           |
+| JSON Web Token | 9.x     | Authentication        |
+| Bcryptjs       | 2.4     | Password Hashing      |
+| node-fetch     | 3.x     | Ollama API Calls      |
+| dotenv         | 16.x    | Environment Variables |
+| nodemon        | 3.x     | Dev Auto-restart      |
+
 
 ### Database & AI
-| Technology | Purpose |
-|------------|---------|
-| MongoDB Atlas | Cloud Database |
+| Technology        | Purpose        |
+| ----------------- | -------------- |
+| MongoDB Atlas     | Cloud Database |
 | Ollama + llama3.2 | Local AI Model |
 
 ---
@@ -260,6 +262,8 @@ Visit **http://localhost:5173** in your browser.
 
 Register a new account and start banking! 🎉
 
+
+
 ---
 
 ## 🔑 Environment Variables
@@ -270,62 +274,65 @@ Create a `.env` file inside the `backend/` folder with these values:
 PORT=5000
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/bankapp_db?retryWrites=true&w=majority
 JWT_SECRET=your_super_secret_jwt_key_here
-OLLAMA_URL=http://localhost:11434
+OLLAMA_URL=http://localhost:11434  (for server update as http://ollama:11434  )
 OLLAMA_MODEL=llama3.2
 ```
 
-| Variable | Description | Example |
-|---|---|---|
-| `PORT` | Backend server port | `5000` |
-| `MONGODB_URI` | MongoDB connection string | Atlas connection string |
-| `JWT_SECRET` | Secret key for JWT tokens | Any long random string |
-| `OLLAMA_URL` | Ollama server URL | `http://localhost:11434` |
-| `OLLAMA_MODEL` | AI model to use | `llama3.2` or `tinyllama` |
+| Variable       | Description               | Example                   |
+| -------------- | ------------------------- | ------------------------- |
+| `PORT`         | Backend server port       | `5000`                    |
+| `MONGODB_URI`  | MongoDB connection string | Atlas connection string   |
+| `JWT_SECRET`   | Secret key for JWT tokens | Any long random string    |
+| `OLLAMA_URL`   | Ollama server URL         | `http://localhost:11434`  |
+| `OLLAMA_MODEL` | AI model to use           | `llama3.2` or `tinyllama` |
 
 ---
 
 ## 📡 API Endpoints
 
 ### Auth Routes — `/api/auth`
-| Method | Endpoint | Description | Auth |
-|---|---|---|---|
-| POST | `/register` | Create new user account | ❌ |
-| POST | `/login` | Login and get JWT token | ❌ |
-| GET | `/profile` | Get current user profile | ✅ |
-| PUT | `/profile` | Update user profile | ✅ |
-| DELETE | `/profile` | Delete user account | ✅ |
+| Method | Endpoint    | Description              | Auth |
+| ------ | ----------- | ------------------------ | ---- |
+| POST   | `/register` | Create new user account  | ❌    |
+| POST   | `/login`    | Login and get JWT token  | ❌    |
+| GET    | `/profile`  | Get current user profile | ✅    |
+| PUT    | `/profile`  | Update user profile      | ✅    |
+| DELETE | `/profile`  | Delete user account      | ✅    |
+|
 
 ### Account Routes — `/api/accounts`
-| Method | Endpoint | Description | Auth |
-|---|---|---|---|
-| POST | `/` | Create new bank account | ✅ |
-| GET | `/` | Get all user accounts | ✅ |
-| GET | `/:id` | Get single account | ✅ |
-| PUT | `/:id` | Update account | ✅ |
-| DELETE | `/:id` | Delete account | ✅ |
+| Method | Endpoint | Description             | Auth |
+| ------ | -------- | ----------------------- | ---- |
+| POST   | `/`      | Create new bank account | ✅    |
+| GET    | `/`      | Get all user accounts   | ✅    |
+| GET    | `/:id`   | Get single account      | ✅    |
+| PUT    | `/:id`   | Update account          | ✅    |
+| DELETE | `/:id`   | Delete account          | ✅    |
 
 ### Transaction Routes — `/api/transactions`
-| Method | Endpoint | Description | Auth |
-|---|---|---|---|
-| POST | `/deposit` | Deposit funds | ✅ |
-| POST | `/withdraw` | Withdraw funds | ✅ |
-| POST | `/transfer` | Transfer between accounts | ✅ |
-| GET | `/account/:id` | Get account transactions | ✅ |
+| Method | Endpoint       | Description               | Auth |
+| ------ | -------------- | ------------------------- | ---- |
+| POST   | `/deposit`     | Deposit funds             | ✅    |
+| POST   | `/withdraw`    | Withdraw funds            | ✅    |
+| POST   | `/transfer`    | Transfer between accounts | ✅    |
+| GET    | `/account/:id` | Get account transactions  | ✅    |
 
 ### AI Routes — `/api/ai`
-| Method | Endpoint | Description | Auth |
-|---|---|---|---|
-| POST | `/chat` | Chat with BankBot AI | ✅ |
+| Method | Endpoint | Description          | Auth |
+| ------ | -------- | -------------------- | ---- |
+| POST   | `/chat`  | Chat with BankBot AI | ✅    |
+
 
 ### Admin Routes — `/api/admin`
-| Method | Endpoint | Description | Auth |
-|---|---|---|---|
-| GET | `/stats` | System-wide statistics | 👑 Admin |
-| GET | `/users` | All users list | 👑 Admin |
-| PUT | `/users/:id/role` | Change user role | 👑 Admin |
-| DELETE | `/users/:id` | Delete user | 👑 Admin |
-| GET | `/accounts` | All accounts | 👑 Admin |
-| GET | `/transactions` | All transactions | 👑 Admin |
+| Method | Endpoint          | Description            | Auth     |
+| ------ | ----------------- | ---------------------- | -------- |
+| GET    | `/stats`          | System-wide statistics | 👑 Admin |
+| GET    | `/users`          | List all users         | 👑 Admin |
+| PUT    | `/users/:id/role` | Change user role       | 👑 Admin |
+| DELETE | `/users/:id`      | Delete user            | 👑 Admin |
+| GET    | `/accounts`       | List all accounts      | 👑 Admin |
+| GET    | `/transactions`   | List all transactions  | 👑 Admin |
+
 
 ---
 
@@ -453,7 +460,149 @@ Build Dependencies (Dev Dependencies)
 Nginx
 Configure reverse proxy for /api
 
+----------------------------------------------------------------------------------------
+
+
+## 🚀 Deploying PaisaBank on AWS EC2
+
+This section explains how to run **PaisaBank** (frontend, backend, and Ollama AI) on an **EC2 instance** using Docker.
+
 ---
+
+### 1️⃣ Prepare the EC2 Instance
+
+1. Launch an EC2 instance (Ubuntu recommended).
+2. Open **Security Group** ports:
+
+   * HTTP: 80
+   * Backend (optional for testing): 5000
+   * Ollama AI (optional, internal only): 11434
+3. Connect to EC2:
+
+```bash
+ssh -i "your-key.pem" ubuntu@<EC2_PUBLIC_IP>
+```
+
+4. Install Docker and Docker Compose if not already installed:
+
+```bash
+sudo apt update
+sudo apt install -y docker.io docker-compose
+sudo systemctl enable --now docker
+```
+
+---
+
+### 2️⃣ Backend Configuration
+
+1. **Ollama URL** must point to the container, not localhost. Ensure in `backend/controllers/aiController.js`:
+
+```js
+const OLLAMA_URL   = process.env.OLLAMA_URL   || 'http://ollama:11434';
+const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3.2';
+```
+
+2. Test AI endpoint inside backend container:
+
+```bash
+docker exec -it paisabank-backend sh
+curl http://ollama:11434/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+        "model": "llama3.2",
+        "messages": [{"role": "user", "content": "Hello"}],
+        "stream": false
+      }'
+```
+
+✅ You should get a JSON response from the AI.
+
+---
+
+### 3️⃣ Frontend Configuration
+
+1. Update `frontend/nginx.conf`:
+
+```nginx
+server {
+    listen 80;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass         http://backend:5000;
+        proxy_http_version 1.1;
+        proxy_set_header   Upgrade $http_upgrade;
+        proxy_set_header   Connection 'upgrade';
+        proxy_set_header   Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+        # Increase timeout for AI requests
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 300s;
+        proxy_send_timeout 300s;
+    }
+
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
+}
+```
+
+2. Rebuild frontend Docker image after changes:
+
+```bash
+docker compose down
+docker compose up -d --build
+```
+
+---
+
+### 4️⃣ Pull Ollama Model
+
+If not already pulled, inside the Ollama container:
+
+```bash
+docker exec -it paisabank-ollama ollama pull llama3.2
+```
+
+Check available models:
+
+```bash
+docker exec -it paisabank-ollama ollama list
+```
+
+---
+
+### 5️⃣ Start All Services
+
+```bash
+docker compose up -d
+docker ps
+```
+
+You should see containers:
+
+* `paisabank-frontend` → `0.0.0.0:80`
+* `paisabank-backend` → `0.0.0.0:5000`
+* `paisabank-ollama` → `0.0.0.0:11434`
+
+---
+
+### 6️⃣ Access the App
+
+* Frontend: `http://<EC2_PUBLIC_IP>/`
+* Backend API (optional): `http://<EC2_PUBLIC_IP>:5000/api/...`
+
+> ⚠️ Note: All `/api` requests from frontend are proxied automatically via Nginx.
+
+---
+
+
+_________________________________________________________________________________________
 
 ## 🤝 Contributing
 

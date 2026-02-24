@@ -35,7 +35,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Step 8: Copy the built React files from Stage 1 into Nginx's serve folder
-COPY --from=builder /app/dist /user/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Step 9: Copy our custom Nginx config
 COPY nginx.conf  /etc/nginx/conf.d/default.conf

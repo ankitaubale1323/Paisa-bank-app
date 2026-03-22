@@ -1,0 +1,42 @@
+name: CICD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-scan-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔑 Set Short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: 🐳 Build Docker Image
+        run: |
+          docker build -t bank-app:latest -f frontend/src/Dockerfile .
+          docker build -t bank-app:sha-${{ env.SHORT_SHA }} -f frontend/src/Dockerfile .
+
+      - name: 🔐 Docker Login
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 🏷️ Tag Images
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker tag bank-app:latest ${{ secrets.DOCKER_USERNAME }}/bank-app:latest
+          docker tag bank-app:sha-${{ env.SHORT_SHA }} ${{ secrets.DOCKER_USERNAME }}/bank-app:sha-${{ env.SHORT_SHA }}
+
+      - name: 📤 Push Docker Images
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/bank-app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/bank-app:sha-${{ env.SHORT_SHA }}

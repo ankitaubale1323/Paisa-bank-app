@@ -19,8 +19,8 @@ jobs:
 
       - name: 🐳 Build Docker Image
         run: |
-          docker build -t bank-app:latest -f frontend/src/Dockerfile .
-          docker build -t bank-app:sha-${{ env.SHORT_SHA }} -f frontend/src/Dockerfile .
+          docker build -t bank-app:latest -f frontend/Dockerfile .
+          docker build -t bank-app:sha-${{ env.SHORT_SHA }} -f frontend/Dockerfile .
 
       - name: 🔐 Docker Login
         if: github.ref == 'refs/heads/main'

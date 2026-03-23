@@ -52,6 +52,7 @@ jobs:
         run: |
           docker build -t $IMAGE_NAME_BACKEND:latest \
                        -t $IMAGE_NAME_BACKEND:$SHORT_SHA \
+                       -f backend/Dockerfile backend
                       
 
       - name: 📤 Push Backend Image

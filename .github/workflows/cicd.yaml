@@ -37,8 +37,8 @@ jobs:
       - name: 🏗️ Build Frontend Image
         run: |
           docker build -t $IMAGE_NAME_FRONTEND:latest \
-                       -t $IMAGE_NAME_FRONTEND:$SHORT_SHA \
-                       -f frontend/Dockerfile .
+                 -t $IMAGE_NAME_FRONTEND:$SHORT_SHA \
+                 -f frontend/Dockerfile frontend
 
       - name: 📤 Push Frontend Image
         run: |

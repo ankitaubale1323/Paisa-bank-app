@@ -1,48 +1,73 @@
-name: CICD
+name: Docker CI/CD
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME_FRONTEND: ${{ secrets.DOCKER_USERNAME }}/frontend-paisa-app
+  IMAGE_NAME_BACKEND: ${{ secrets.DOCKER_USERNAME }}/backend-paisa-app
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Checkout code
+      # Checkout code
+      - name: 📥 Checkout the latest code
         uses: actions/checkout@v4
 
-      - name: Login to Docker Hub
+      # Set short SHA
+      - name: 🔑 Set short SHA
+        run: |
+             echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      # Docker login
+      - name: 🔐 Docker login
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build backend image
+      # =========================
+      # FRONTEND IMAGE
+      # =========================
+      - name: 🏗️ Build Frontend Image
         run: |
-          docker build \
-            -t ${{ secrets.DOCKER_USERNAME }}/nexbank-backend:latest \
-            -t ${{ secrets.DOCKER_USERNAME }}/nexbank-backend:${{ github.sha }} \
-            -f backend/Dockerfile \
-            ./backend
+          docker build -t $IMAGE_NAME_FRONTEND:latest \
+                       -t $IMAGE_NAME_FRONTEND:$SHORT_SHA \
+                       -f frontend/Dockerfile .
 
-      - name: Build frontend image
+      - name: 📤 Push Frontend Image
         run: |
-          docker build \
-            -t ${{ secrets.DOCKER_USERNAME }}/nexbank-frontend:latest \
-            -t ${{ secrets.DOCKER_USERNAME }}/nexbank-frontend:${{ github.sha }} \
-            -f frontend/Dockerfile \
-            ./frontend
+          docker push $IMAGE_NAME_FRONTEND:latest
+          docker push $IMAGE_NAME_FRONTEND:$SHORT_SHA
 
-      - name: Push backend image
+      # =========================
+      # BACKEND IMAGE
+      # =========================
+      - name: 🏗️ Build Backend Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/nexbank-backend:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/nexbank-backend:${{ github.sha }}
+          docker build -t $IMAGE_NAME_BACKEND:latest \
+                       -t $IMAGE_NAME_BACKEND:$SHORT_SHA \
+                       -f backend/Dockerfile .
 
-      - name: Push frontend image
+      - name: 📤 Push Backend Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/nexbank-frontend:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/nexbank-frontend:${{ github.sha }}
+          docker push $IMAGE_NAME_BACKEND:latest
+          docker push $IMAGE_NAME_BACKEND:$SHORT_SHA
+
+      # =========================
+      # OUTPUT INFO
+      # =========================
+      - name: 📢 Output Image Info
+        run: |
+          echo "Frontend Image:"
+          echo "$IMAGE_NAME_FRONTEND:latest"
+          echo "$IMAGE_NAME_FRONTEND:$SHORT_SHA"
+
+          echo "Backend Image:"
+          echo "$IMAGE_NAME_BACKEND:latest"
+          echo "$IMAGE_NAME_BACKEND:$SHORT_SHA"

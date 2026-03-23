@@ -15,7 +15,8 @@ COPY package*.json ./
 
 # Step 4: Install ALL dependencies (including devDependencies like Vite)
 # We need devDependencies to build the React app
-RUN npm install
+#RUN npm install
+RUN npm ci --legacy-peer-deps
 
 # Step 5: Copy all frontend source files
 # This includes src/, index.html, vite.config.js, tailwind.config.js etc

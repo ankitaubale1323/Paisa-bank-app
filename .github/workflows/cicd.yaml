@@ -50,8 +50,8 @@ jobs:
       # =========================
       - name: 🏗️ Build Backend Image
         run: |
-          docker build -t $IMAGE_NAME_BACKEND:latest .
-                       -t $IMAGE_NAME_BACKEND:$SHORT_SHA .
+          docker build -t $IMAGE_NAME_BACKEND:latest \
+                       -t $IMAGE_NAME_BACKEND:$SHORT_SHA \
                       
 
       - name: 📤 Push Backend Image

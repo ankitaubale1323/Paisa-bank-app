@@ -65,7 +65,7 @@ function Loader() {
   return (
     <div style={{ minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', backgroundColor:'#020714' }}>
       <div style={{ width:40, height:40, border:'3px solid rgba(245,158,11,0.2)', borderTopColor:'#f59e0b', borderRadius:'50%', animation:'spin 0.7s linear infinite', marginBottom:16 }}/>
-      <p style={{ color:'#475569', fontFamily:'sans-serif', fontSize:'0.9rem' }}>Loading NexBank…</p>
+      <p style={{ color:'#475569', fontFamily:'sans-serif', fontSize:'0.9rem' }}>Loading paisa-bank-app…</p>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );

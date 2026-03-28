@@ -1,0 +1,47 @@
+# ─────────────────────────────────────────────────────────────────────
+#  EKS production overrides
+#  Use on top of values.yaml — do NOT use standalone
+#
+#  helm upgrade --install paisa-bank-app ~/paisa-bank-app-chart \
+#    -f ~/paisa-bank-app-chart/values-eks.yaml \
+#    --set secrets.mongoRootPassword="REAL_PASSWORD" \
+#    --set secrets.jwtSecret="REAL_JWT_32CHARS" \
+#    --namespace paisa-bank-app --create-namespace
+# ─────────────────────────────────────────────────────────────────────
+
+frontend:
+  replicaCount: 2
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 6
+    targetCPUUtilizationPercentage: 70
+
+backend:
+  replicaCount: 2
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 8
+    targetCPUUtilizationPercentage: 65
+    targetMemoryUtilizationPercentage: 75
+
+mongodb:
+  persistence:
+    enabled: true
+    storageClass: "paisa-bank-app-ebs"
+    size: 10Gi
+
+ollama:
+  persistence:
+    enabled: true
+    storageClass: "paisa-bank-app-ebs"
+    size: 20Gi
+
+ingress:
+  className: "alb"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'

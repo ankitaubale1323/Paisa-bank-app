@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paisa-bank-app-config
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "paisa-bank-app.labels" . | nindent 4 }}
+data:
+  PORT:         {{ .Values.backend.config.port | quote }}
+  NODE_ENV:     {{ .Values.backend.config.nodeEnv | quote }}
+  OLLAMA_URL:   "http://ollama-service:{{ .Values.ollama.service.port }}"
+  OLLAMA_MODEL: {{ .Values.ollama.model | quote }}

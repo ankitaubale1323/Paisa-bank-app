@@ -1,0 +1,121 @@
+{{- if .Values.ollama.enabled }}
+# ── Headless Service ─────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-headless
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "paisa-bank-app.labels" . | nindent 4 }}
+    app: ollama
+spec:
+  clusterIP: None
+  selector:
+    app: ollama
+  ports:
+    - name: ollama
+      port: 11434
+      targetPort: 11434
+
+---
+# ── Regular Service ──────────────────────────────────────────
+# Used by backend OLLAMA_URL — routes to ollama-0 pod
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama-service
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "paisa-bank-app.labels" . | nindent 4 }}
+    app: ollama
+spec:
+  selector:
+    app: ollama
+  ports:
+    - name: ollama
+      port: {{ .Values.ollama.service.port }}
+      targetPort: 11434
+  type: {{ .Values.ollama.service.type }}
+
+---
+# ── StatefulSet ──────────────────────────────────────────────
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ollama
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "paisa-bank-app.labels" . | nindent 4 }}
+    app: ollama
+spec:
+  serviceName: ollama-headless
+  replicas: {{ .Values.ollama.replicaCount }}
+  selector:
+    matchLabels:
+      app: ollama
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: ollama
+          image: "{{ .Values.ollama.image.repository }}:{{ .Values.ollama.image.tag }}"
+          imagePullPolicy: {{ .Values.ollama.image.pullPolicy }}
+          ports:
+            - name: ollama
+              containerPort: 11434
+          env:
+            - name: OLLAMA_HOST
+              value: "0.0.0.0"
+          volumeMounts:
+            - name: ollama-data
+              mountPath: /root/.ollama
+          resources:
+            {{- toYaml .Values.ollama.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 11434
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 11434
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 3
+
+      {{- if not .Values.ollama.persistence.enabled }}
+      # Kind / local — emptyDir (model must be re-pulled on pod restart)
+      volumes:
+        - name: ollama-data
+          emptyDir: {}
+      {{- end }}
+
+  {{- if .Values.ollama.persistence.enabled }}
+  # EKS — volumeClaimTemplates auto-creates one PVC per pod:
+  #   ollama-data-ollama-0
+  # Model is downloaded once and persists across restarts
+  volumeClaimTemplates:
+    - metadata:
+        name: ollama-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: {{ .Values.ollama.persistence.storageClass }}
+        resources:
+          requests:
+            storage: {{ .Values.ollama.persistence.size }}
+  {{- end }}
+
+{{- end }}

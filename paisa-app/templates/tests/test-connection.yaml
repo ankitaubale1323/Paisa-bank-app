@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: "{{ include "paisa-bank-app.fullname" . }}-test-connection"
   labels:
-    {{- include "paisa-app.labels" . | nindent 4 }}
+    {{- include "paisa-bank-app.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
 spec:

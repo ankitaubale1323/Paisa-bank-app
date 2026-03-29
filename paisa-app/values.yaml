@@ -1,23 +1,23 @@
 # ─────────────────────────────────────────────────────────────────────
-#  NexBank Helm Chart — values.yaml
+# Paisa  Helm Chart — values.yaml
 #
 #  DEFAULT values for Kind (local testing on EC2).
 #  Real secret values are NEVER stored here.
 #
 #  HOW TO PASS SECRETS:
-#    helm install nexbank . \
+#    helm install paisa-bank-app . \
 #      --set secrets.mongoRootPassword="REAL_PASSWORD" \
 #      --set secrets.jwtSecret="REAL_JWT_SECRET_32CHARS"
 #
 #  For EKS:
-#    helm install nexbank . -f values-eks.yaml \
+#    helm install paisa-bank-app . -f values-eks.yaml \
 #      --set secrets.mongoRootPassword="REAL_PASSWORD" \
 #      --set secrets.jwtSecret="REAL_JWT_SECRET_32CHARS"
 # ─────────────────────────────────────────────────────────────────────
 
 # ── Global ───────────────────────────────────────────────────
 global:
-  namespace: nexbank
+  namespace: paisa-bank-app
 
 # ── Secrets (NEVER put real values here) ─────────────────────
 # These placeholders make helm lint pass
@@ -93,7 +93,7 @@ backend:
 # ── MongoDB StatefulSet ───────────────────────────────────────
 # StatefulSet gives:
 #   - Stable pod name:  mongodb-0
-#   - Stable DNS:       mongodb-0.mongodb-headless.nexbank.svc.cluster.local
+#   - Stable DNS:       mongodb-0.mongodb-headless.paisa-bank-app.svc.cluster.local
 #   - Per-pod PVC:      mongodb-data-mongodb-0 (auto-created by volumeClaimTemplates)
 mongodb:
   enabled: true
@@ -114,7 +114,7 @@ mongodb:
   # true  = EBS PVC  (EKS — data persists, use in production)
   persistence:
     enabled: false
-    storageClass: "nexbank-ebs"
+    storageClass: "paisa-bank-app-ebs"
     size: 10Gi
 
   resources:
@@ -147,7 +147,7 @@ ollama:
   # true  = EBS PVC  (EKS)
   persistence:
     enabled: false
-    storageClass: "nexbank-ebs"
+    storageClass: "paisa-bank-app-ebs"
     size: 20Gi
 
   resources:

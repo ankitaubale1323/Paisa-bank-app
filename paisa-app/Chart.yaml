@@ -1,9 +1,9 @@
 apiVersion: v2
-name: nexbank
-description: NexBank — AI-powered banking app (Frontend + Backend + MongoDB + Ollama)
+name: paisa-bank-app
+description: paisa-bank-app — AI-powered banking app (Frontend + Backend + MongoDB + Ollama)
 type: application
 version: 1.0.0
 appVersion: "1.0.0"
 maintainers:
   - name: Ankita Ubale
-    email: ankitaubale48@gmail.com
+    email: ankitaubalesocial@gmail.com

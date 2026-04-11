@@ -25,7 +25,7 @@ jobs:
       tag: sha-${{ github.sha && format('{0}', github.sha) || 'unknown' }}
     secrets:
       docker_username: ${{ secrets.DOCKER_USERNAME }}
-      docker_token: ${{ secrets.DOCKER_TOKEN }}
+      docker_token: ${{ secrets.DOCKER_PASSWORD }}
 
   # ── Job 2b: Trivy Security Scan (Brownie Points) ─────────────
   trivy-scan:

@@ -1,0 +1,54 @@
+name: PR Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  # ── Call reusable build & test ──────────────────────────────
+  build-test:
+    name: Build & Test (PR)
+    uses: ./.github/workflows/reusable-build-test.yml
+    with:
+      node_version: "20"
+      run_tests: true
+
+  # ── PR summary comment ──────────────────────────────────────
+  pr-comment:
+    name: PR Check Summary
+    runs-on: ubuntu-latest
+    needs: build-test
+    if: always()
+
+    steps:
+      - name: Print PR summary
+        run: |
+          echo "==========================================="
+          echo "  PR checks for branch: ${{ github.head_ref }}"
+          echo "  Test result : ${{ needs.build-test.outputs.test_result }}"
+          echo "  Triggered by: ${{ github.actor }}"
+          echo "  Commit SHA  : ${{ github.sha }}"
+          echo "==========================================="
+
+      - name: Write step summary
+        run: |
+          echo "## 🏦 Paisa Bank – PR Check Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Branch | \`${{ github.head_ref }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Actor | ${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Result | ${{ needs.build-test.outputs.test_result == 'passed' && '✅ passed' || '❌ failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "> 🚫 Docker build skipped on PRs — only runs on merge to \`main\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail if tests failed
+        if: needs.build-test.outputs.test_result == 'failed'
+        run: |
+          echo "Tests failed — blocking PR merge."
+          exit 1

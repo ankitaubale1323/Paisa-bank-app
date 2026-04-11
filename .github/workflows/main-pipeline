@@ -44,7 +44,7 @@ jobs:
           severity: "CRITICAL"
         env:
           TRIVY_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          TRIVY_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+          TRIVY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Upload Trivy scan report
         uses: actions/upload-artifact@v4

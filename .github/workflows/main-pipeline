@@ -66,7 +66,7 @@ jobs:
         run: |
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
           IMAGE_URL="${{ secrets.DOCKER_USERNAME }}/paisa-bank-app:sha-${{ github.sha }}"
-          echo "🚀 Deploying image: $IMAGE_URL to production"
+          echo " Deploying image: $IMAGE_URL to production"
           echo "   Short SHA  : $SHORT_SHA"
           echo "   Triggered by: ${{ github.actor }}"
           echo ""
